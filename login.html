@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login / Signup</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body { font-family: monospace; background: var(--bg); color: var(--text); }
+.container { max-width:450px; margin:50px auto; background: var(--card); border:2px solid var(--border); padding:20px; }
+input, button { width:100%; margin:5px 0; padding:8px; font-family:inherit; }
+button { cursor:pointer; border:2px solid var(--border); background: var(--bg); color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Login</h2>
+<input id="log_user" placeholder="Username">
+<input id="log_pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<hr>
+
+<h2>Create Account</h2>
+<input id="new_user" placeholder="Username">
+<input id="new_pass" type="password" placeholder="Password">
+<button onclick="signup()">Sign Up</button>
+</div>
+
+<script src="data.js"></script>
+<script>
+function signup(){
+  let user = document.getElementById("new_user").value;
+  let pass = document.getElementById("new_pass").value;
+  if(!user||!pass) return alert("Fill all fields");
+  let users = getUsers();
+  if(users[user]) return alert("User exists");
+  users[user] = pass;
+  saveUsers(users);
+  alert("Account created!");
+}
+
+function login(){
+  let user = document.getElementById("log_user").value;
+  let pass = document.getElementById("log_pass").value;
+  let users = getUsers();
+  if(users[user]===pass){
+    setCurrentUser(user);
+    alert("Logged in!");
+    location.href="index.html";
+  } else alert("Invalid login");
+}
+</script>
+</body>
+</html>
