@@ -1,0 +1,12 @@
+:root {
+--bg:#f2f2f2; --text:#000; --card:#fff; --border:#000; --accent:#0066ff; --font:"Courier New", monospace;
+}
+body.theme-retro{--bg:#f2f2f2;--text:#000;--card:#fff;--border:#000;--accent:#0066ff;--font:"Courier New";}
+body.theme-dos{--bg:#000;--text:#0f0;--card:#000;--border:#0f0;--accent:#0f0;--font:"Courier New";}
+body.theme-neon{--bg:#050014;--text:#f0f;--card:#0d001f;--border:#f0f;--accent:#0ff;}
+body.theme-vapor{--bg:#ffe6ff;--text:#4b0082;--card:#ffffffaa;--border:#ff66cc;--accent:#00aaff;--font:"MS Gothic";}
+body.theme-beige{--bg:#f6e9d8;--text:#000;--card:#fff8f0;--border:#000;--accent:#934d00;--font:"Times New Roman";}
+body.theme-modern{--bg:#fff;--text:#222;--card:#f8f8f8;--border:#ccc;--accent:#0077ff;--font:"Inter";}
+body {background:var(--bg);color:var(--text);font-family:var(--font);}
+a{color:var(--accent);text-decoration:none;}
+button,select,input,textarea{font-family:var(--font);}
