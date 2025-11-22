@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ultimate Retro Blog — Super Deluxe Edition</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: url('https://i.imgur.com/7VbZxqZ.png');
+        font-family: "Courier New", monospace;
+        color: #000;
+        text-shadow: 0 0 3px rgba(0,255,0,0.5);
+    }
+
+    /* CRT Scanlines */
+    body::before {
+        content: "";
+        pointer-events: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.15) 0px,
+            rgba(0,0,0,0.15) 2px,
+            rgba(0,0,0,0) 3px
+        );
+        z-index: 9999;
+    }
+
+    blink { animation: blinker 0.8s step-start infinite; }
+    @keyframes blinker { 50% { opacity: 0; } }
+
+    /* Navigation */
+    nav {
+        background: #000;
+        color: #0f0;
+        padding: 10px;
+        text-align: center;
+        border-bottom: 4px solid #0f0;
+    }
+    nav a {
+        color: #0f0;
+        margin: 0 10px;
+        text-decoration: underline;
+    }
+
+    /* Header */
+    header {
+        background: #222;
+        color: #0ff;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 4px solid #0ff;
+    }
+    header img {
+        width: 200px;
+        image-rendering: pixelated;
+    }
+
+    /* Layout */
+    .layout {
+        display: flex;
+        width: 90%;
+        margin: 20px auto;
+        max-width: 1100px;
+    }
+
+    /* Sidebar */
+    aside {
+        width: 200px;
+        margin-right: 20px;
+        background: #fff;
+        border: 2px solid #000;
+        padding: 10px;
+    }
+
+    /* Posts */
+    .content {
+        flex: 1;
+    }
+    .post {
+        background: #fff;
+        border: 2px solid #000;
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    .post h2 { margin-top: 0; }
+
+    .date {
+        font-size: 14px;
+        color: #444;
+        margin-bottom: 10px;
+    }
+
+    /* Pagination */
+    .pagination {
+        text-align: center;
+        margin: 20px 0;
+    }
+    .pagination a { color: #00f; }
+
+    /* Guestbook */
+    #guestbook {
+        margin-top: 50px;
+        background: #fff;
+        border: 2px dashed #000;
+        padding: 15px;
+    }
+
+    /* Theme Buttons */
+    .theme-buttons button {
+        padding: 5px 10px;
+        margin: 4px 0;
+        cursor: pointer;
+        width: 100%;
+        font-family: inherit;
+    }
+</style>
+
+<script>
+function setTheme(theme) {
+    if (theme === 'dos') {
+        document.body.style.background = '#000';
+        document.body.style.color = '#0f0';
+    } else if (theme === 'beige') {
+        document.body.style.background = '#f5f1e8';
+        document.body.style.color = '#000';
+    } else {
+        document.body.style.background = 'url(https://i.imgur.com/7VbZxqZ.png)';
+        document.body.style.color = '#000';
+    }
+}
+</script>
+
+</head>
+<body>
+
+<!-- MIDI Music -->
+<bgsound src="https://files.freemidi.org/download3-3389-eiffel_65_-_blue.mid" loop="infinite">
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">Archive</a>
+    <a href="#">About</a>
+    <a href="#guestbook">Guestbook</a>
+</nav>
+
+<header>
+    <img src="https://i.imgur.com/LLF3mUp.png" alt="pixel-logo">
+    <h1><blink>ULTIMATE RETRO BLOG</blink></h1>
+    <marquee>Welcome to the most 90s webpage in existence 🚀</marquee>
+</header>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside>
+        <h3>Quick Links</h3>
+        <ul>
+            <li><a href="#">Latest Posts</a></li>
+            <li><a href="#">Old Posts</a></li>
+            <li><a href="#guestbook">Sign Guestbook</a></li>
+        </ul>
+
+        <h3>Theme Switcher</h3>
+        <div class="theme-buttons">
+            <button onclick="setTheme('default')">Retro Space</button>
+            <button onclick="setTheme('dos')">DOS Green</button>
+            <button onclick="setTheme('beige')">Beige 90s</button>
+        </div>
+
+        <h3>Badges</h3>
+        <img src="https://i.imgur.com/vVQ5VQO.gif" width="120"><br>
+        <img src="https://i.imgur.com/Xy7iy2K.gif" width="120"><br>
+        <img src="https://i.imgur.com/SijpkmR.gif" width="120">
+    </aside>
+
+    <div class="content">
+
+        <!-- POSTS -->
+        <div class="post">
+            <h2>My First Retro Post</h2>
+            <div class="date">January 1, 1999</div>
+            <p>Welcome to the <blink>ultimate</blink> retro experience! Built with HTML, caffeine, and mild regret.</p>
+        </div>
+
+        <div class="post">
+            <h2>The Web Was Better Before CSS</h2>
+            <div class="date">January 3, 1999</div>
+            <p>Marquees, frames, MIDI music, guestbooks — the golden age of design.</p>
+            <marquee behavior="alternate">✨  Truly Beautiful ✨</marquee>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <a href="#">&laquo; Prev</a> |
+            <a href="#">Next &raquo;</a>
+        </div>
+
+        <!-- Guestbook -->
+        <div id="guestbook">
+            <h2>Guestbook</h2>
+            <p>Leave a message! Your words will live forever in the GeoCities heavens.</p>
+            <form>
+                <input type="text" placeholder="Your name" style="width:100%;margin-bottom:5px;">
+                <textarea placeholder="Your message" style="width:100%;height:60px;"></textarea><br>
+                <button type="submit">Sign</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- WEBRING -->
+<div style="text-align:center; margin:30px 0;">
+    <p>You are visitor # <b>004293</b></p>
+    <a href="#">⬅️ Previous Site</a> |
+    <a href="#">Join WebRing</a> |
+    <a href="#">Next Site ➡️</a>
+    <br><br>
+    <img src="https://i.imgur.com/bt7G1QN.gif" width="130">
+</div>
+
+<footer style="text-align:center; padding:20px;">
+    © 1999–2025 Ultimate Retro Blog — Hosted on My Friend’s Dad’s Server
+</footer>
+
+<!-- FLOATING MASCOTS -->
+<img src="https://i.imgur.com/1QnWb6C.gif" 
+     style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;">
+<img src="https://i.imgur.com/Vu9hk1q.gif" 
+     style="position: fixed; bottom: 10px; left: 10px; z-index: 9999;">
+
+</body>
+</html>
