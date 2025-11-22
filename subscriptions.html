@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Subscriptions</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font-family:monospace;background:var(--bg);color:var(--text);}
+.container{max-width:900px;margin:20px auto;}
+.post, .video{border:2px solid var(--border);padding:10px;margin:10px 0;background:var(--card);}
+</style>
+</head>
+<body>
+<div class="container">
+<p><a href="index.html">← Back Home</a></p>
+<h2>Subscriptions Feed</h2>
+<div id="feed"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+let user=getCurrentUser();
+if(!user) document.getElementById("feed").innerHTML="<p>Login to see subscriptions</p>";
+
+function renderFeed(){
+  if(!user) return;
+  let subs=getSubscriptions(user);
+  let posts=getPosts().filter(p=>subs.includes(p.author));
+  let div=document.getElementById("feed");
+  if(!posts.length){div.innerHTML="<p>No posts from subscriptions</p>"; return;}
+  div.innerHTML=posts.map(p=>{
+    if(p.type==="video") return `<div class="video"><a href="video.html?id=${p.id}"><h3>${p.title}</h3></a> by ${p.author}</div>`;
+    else if(p.type==="blog") return `<div class="post"><a href="view.html?id=${p.id}"><h3>${p.title}</h3></a> by ${p.author}</div>`;
+  }).join("");
+}
+
+renderFeed();
+</script>
+</body>
+</html>
