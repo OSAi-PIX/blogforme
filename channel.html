@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Channel</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font-family:monospace;background:var(--bg);color:var(--text);}
+.container{max-width:800px;margin:20px auto;}
+.post, .video{border:2px solid var(--border);padding:10px;margin:10px 0;background:var(--card);}
+.button{padding:5px 10px;border:2px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="container">
+<p><a href="index.html">← Back Home</a></p>
+<h2 id="channelName"></h2>
+<button id="subBtn" class="button"></button>
+<div id="content"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const user = params.get("user");
+if(!user){document.getElementById("content").innerHTML="<p>No user specified</p>";}
+
+document.getElementById("channelName").textContent = user+"'s Channel";
+
+function renderSub(){
+  let cur=getCurrentUser();
+  if(!cur){document.getElementById("subBtn").style.display="none";return;}
+  let subs=getSubscriptions(cur);
+  document.getElementById("subBtn").textContent = subs.includes(user) ? "Unsubscribe" : "Subscribe";
+}
+
+document.getElementById("subBtn").onclick=function(){
+  let cur=getCurrentUser();
+  if(!cur) return alert("Login to subscribe!");
+  let subs=getSubscriptions(cur);
+  if(subs.includes(user)) subs=subs.filter(u=>u!==user);
+  else subs.push(user);
+  saveSubscriptions(cur,subs);
+  renderSub();
+};
+
+function renderContent(){
+  let posts=getPosts().filter(p=>p.author===user);
+  let div=document.getElementById("content");
+  if(!posts.length){div.innerHTML="<p>No posts/videos</p>"; return;}
+  div.innerHTML=posts.map(p=>{
+    if(p.type==="video") return `<div class="video"><a href="video.html?id=${p.id}"><h3>${p.title}</h3></a></div>`;
+    else if(p.type==="blog") return `<div class="post"><a href="view.html?id=${p.id}"><h3>${p.title}</h3></a></div>`;
+  }).join("");
+}
+
+renderSub();
+renderContent();
+</script>
+</body>
+</html>
