@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>View Post</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font-family:monospace;background:var(--bg);color:var(--text);}
+.container{max-width:800px;margin:20px auto;}
+.card{border:2px solid var(--border);padding:15px;margin:10px 0;background:var(--card);}
+input,textarea,button{width:100%;margin:5px 0;padding:8px;font-family:inherit;}
+button{cursor:pointer;border:2px solid var(--border);background:var(--bg);color:var(--text);}
+.comment{border:1px solid var(--border);padding:5px;margin:5px 0;}
+</style>
+</head>
+<body>
+<div class="container">
+<p><a href="index.html">← Back Home</a></p>
+<div id="post" class="card"></div>
+<div class="card">
+<h3>Comments</h3>
+<div id="commentList"></div>
+<textarea id="commentText" rows="3" placeholder="Write a comment"></textarea>
+<button onclick="addComment()">Post Comment</button>
+</div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const params=new URLSearchParams(location.search);
+const postID=params.get("id");
+let posts=getPosts();
+let p=posts.find(x=>x.id==postID);
+if(!p){document.getElementById("post").innerHTML="<p>Post not found</p>";}
+
+document.getElementById("post").innerHTML=`<h2>${p.title}</h2>
+<small>by ${p.author} - ${p.date}</small>
+<p>${p.content}</p>`;
+
+function loadComments(){
+  let comments=getComments(postID);
+  let div=document.getElementById("commentList");
+  if(!comments.length){div.innerHTML="<p>No comments yet</p>"; return;}
+  div.innerHTML=comments.map(c=>`<div class="comment"><b>${c.user}</b> <small>${c.date}</small><p>${c.text}</p></div>`).join("");
+}
+
+function addComment(){
+  let user=getCurrentUser();
+  if(!user) return alert("Login to comment!");
+  let text=document.getElementById("commentText").value.trim();
+  if(!text) return;
+  let comments=getComments(postID);
+  comments.push({user,text,date:new Date().toLocaleString()});
+  saveComments(postID,comments);
+  document.getElementById("commentText").value="";
+  loadComments();
+}
+
+loadComments();
+</script>
+</body>
+</html>
