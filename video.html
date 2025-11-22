@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Video Player</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font-family:monospace;background:var(--bg);color:var(--text);}
+.container{max-width:800px;margin:20px auto;}
+.video-player{width:100%; max-height:450px;}
+.button{border:2px solid var(--border);background:var(--bg);color:var(--text);padding:5px 10px;margin:3px;cursor:pointer;}
+.comment{border:1px solid var(--border);padding:5px;margin:5px 0;}
+</style>
+</head>
+<body>
+
+<div class="container">
+<p><a href="index.html">← Back Home</a></p>
+<div id="videoArea"></div>
+<div id="info"></div>
+
+<h3>Comments</h3>
+<div id="comments"></div>
+
+<textarea id="commentText" rows="3" placeholder="Add a comment"></textarea>
+<button class="button" onclick="addComment()">Post Comment</button>
+</div>
+
+<script src="data.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const id = params.get("id");
+let posts = getPosts();
+let post = posts.find(p=>p.id==id);
+if(!post) {document.getElementById("videoArea").innerHTML="<p>Video not found</p>";}
+
+async function renderVideo(){
+  let area=document.getElementById("videoArea");
+  if(post.type==="video"){
+    const blob=await getMedia(post.mediaKey);
+    if(blob){
+      let url=URL.createObjectURL(blob);
+      area.innerHTML=`<video class="video-player" src="${url}" controls></video>`;
+    } else area.innerHTML="<p>Video file missing</p>";
+  } else if(post.type==="image"){
+    const blob=await getMedia(post.mediaKey);
+    if(blob){
+      let url=URL.createObjectURL(blob);
+      area.innerHTML=`<img src="${url}" style="max-width:100%">`;
+    }
+  }
+}
+
+function renderInfo(){
+  let likes=getLikes(post.id);
+  document.getElementById("info").innerHTML=`
+    <h2>${post.title}</h2>
+    <small>by <a href="channel.html?user=${post.author}">${post.author}</a> - ${post.date}</small>
+    <p>${post.description || post.content || ""}</p>
+    <button class="button" onclick="like()">❤️ Like (${likes.length})</button>
+  `;
+}
+
+function like(){
+  let user=getCurrentUser();
+  if(!user) return alert("Login to like!");
+  likePost(user,post.id);
+  renderInfo();
+}
+
+function loadComments(){
+  let coms=getComments(post.id);
+  let div=document.getElementById("comments");
+  if(!coms.length){div.innerHTML="<p>No comments yet</p>"; return;}
+  div.innerHTML=coms.map(c=>`<div class="comment"><b>${c.user}</b> <small>${c.date}</small><p>${c.text}</p></div>`).join("");
+}
+
+function addComment(){
+  let user=getCurrentUser();
+  if(!user) return alert("Login to comment!");
+  let text=document.getElementById("commentText").value.trim();
+  if(!text) return;
+  let coms=getComments(post.id);
+  coms.push({user,text,date:new Date().toLocaleString()});
+  saveComments(post.id,coms);
+  document.getElementById("commentText").value="";
+  loadComments();
+}
+
+renderVideo();
+renderInfo();
+loadComments();
+</script>
+</body>
+</html>
