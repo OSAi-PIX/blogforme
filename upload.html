@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Upload Content</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font-family:monospace;background:var(--bg);color:var(--text);}
+.container{max-width:600px;margin:30px auto;padding:20px;background:var(--card);border:2px solid var(--border);}
+input,textarea,select,button{width:100%;margin:5px 0;padding:8px;font-family:inherit;}
+button{cursor:pointer;border:2px solid var(--border);background:var(--bg);color:var(--text);}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Upload Content</h2>
+<label>Type:</label>
+<select id="type">
+<option value="video">Video</option>
+<option value="image">Image</option>
+<option value="blog">Blog Post</option>
+</select>
+
+<div id="fileInput">
+<label>File:</label>
+<input type="file" id="media">
+</div>
+
+<label>Title:</label>
+<input id="title" placeholder="Title">
+
+<label>Description / Content:</label>
+<textarea id="desc" rows="6" placeholder="Description (videos/images) or blog content"></textarea>
+
+<button onclick="upload()">Upload</button>
+</div>
+
+<script src="data.js"></script>
+<script>
+document.getElementById("type").addEventListener("change",function(){
+  let t=this.value;
+  document.getElementById("fileInput").style.display=(t=="blog")?"none":"block";
+});
+
+async function upload(){
+  let user = getCurrentUser();
+  if(!user) return alert("Login required!");
+
+  const type=document.getElementById("type").value;
+  const title=document.getElementById("title").value.trim();
+  const desc=document.getElementById("desc").value.trim();
+  if(!title) return alert("Title required");
+
+  const id = Date.now();
+  let posts = getPosts();
+
+  if(type==="blog"){
+    posts.unshift({id,title,content:desc,author:user,date:new Date().toLocaleString(),type:"blog"});
+    savePosts(posts);
+    alert("Blog posted!"); location.href="view.html?id="+id;
+    return;
+  }
+
+  let file=document.getElementById("media").files[0];
+  if(!file) return alert("Select a file");
+
+  const key=id+"_media";
+  await saveMedia(key,file);
+  posts.unshift({id,title,description:desc,author:user,date:new Date().toLocaleString(),type:type,mediaKey:key,views:0});
+  savePosts(posts);
+  alert(type.charAt(0).toUpperCase()+type.slice(1)+" uploaded!");
+  location.href=(type==="video")?"video.html?id="+id:"view.html?id="+id;
+}
+</script>
+</body>
+</html>
