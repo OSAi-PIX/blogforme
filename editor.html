@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Blog Editor</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font-family:monospace;background:var(--bg);color:var(--text);}
+.container{max-width:600px;margin:30px auto;padding:20px;background:var(--card);border:2px solid var(--border);}
+input,textarea,button{width:100%;margin:5px 0;padding:8px;font-family:inherit;}
+button{cursor:pointer;border:2px solid var(--border);background:var(--bg);color:var(--text);}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Create New Blog Post</h2>
+<input id="title" placeholder="Title">
+<textarea id="content" rows="8" placeholder="Content"></textarea>
+<button onclick="publish()">Publish</button>
+</div>
+
+<script src="data.js"></script>
+<script>
+function publish(){
+  let user=getCurrentUser();
+  if(!user) return alert("Login required!");
+  let posts=getPosts();
+  const id=Date.now();
+  posts.unshift({id,title:document.getElementById("title").value,content:document.getElementById("content").value,author:user,date:new Date().toLocaleString(),type:"blog"});
+  savePosts(posts);
+  alert("Blog posted!");
+  location.href="view.html?id="+id;
+}
+</script>
+</body>
+</html>
