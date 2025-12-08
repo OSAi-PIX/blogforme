@@ -1,12 +1,139 @@
-:root {
---bg:#f2f2f2; --text:#000; --card:#fff; --border:#000; --accent:#0066ff; --font:"Courier New", monospace;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Themed App</title>
+<style>
+/* === THEMES === */
+
+/* Retro */
+body.theme-retro {
+  --bg:#f2f2f2;
+  --text:#111;
+  --card:#fff;
+  --border:#000;
+  --accent:#0066ff;
+  --font:"Courier New", monospace;
 }
-body.theme-retro{--bg:#f2f2f2;--text:#000;--card:#fff;--border:#000;--accent:#0066ff;--font:"Courier New";}
-body.theme-dos{--bg:#000;--text:#0f0;--card:#000;--border:#0f0;--accent:#0f0;--font:"Courier New";}
-body.theme-neon{--bg:#050014;--text:#f0f;--card:#0d001f;--border:#f0f;--accent:#0ff;}
-body.theme-vapor{--bg:#ffe6ff;--text:#4b0082;--card:#ffffffaa;--border:#ff66cc;--accent:#00aaff;--font:"MS Gothic";}
-body.theme-beige{--bg:#f6e9d8;--text:#000;--card:#fff8f0;--border:#000;--accent:#934d00;--font:"Times New Roman";}
-body.theme-modern{--bg:#fff;--text:#222;--card:#f8f8f8;--border:#ccc;--accent:#0077ff;--font:"Inter";}
-body {background:var(--bg);color:var(--text);font-family:var(--font);}
-a{color:var(--accent);text-decoration:none;}
-button,select,input,textarea{font-family:var(--font);}
+
+/* DOS */
+body.theme-dos {
+  --bg:#000;
+  --text:#0f0;
+  --card:#000;
+  --border:#0f0;
+  --accent:#0f0;
+  --font:"Courier New", monospace;
+}
+
+/* Neon */
+body.theme-neon {
+  --bg:#050014;
+  --text:#ff00ff;
+  --card:#0d001f;
+  --border:#ff00ff;
+  --accent:#00ffff;
+  --font:"Orbitron", sans-serif;
+}
+
+/* Vaporwave */
+body.theme-vapor {
+  --bg:linear-gradient(135deg,#ffe6ff,#ccffff);
+  --text:#4b0082;
+  --card:#ffffffcc;
+  --border:#ff66cc;
+  --accent:#00aaff;
+  --font:"MS Gothic", sans-serif;
+}
+
+/* Beige Classic */
+body.theme-beige {
+  --bg:#f6e9d8;
+  --text:#222;
+  --card:#fff8f0;
+  --border:#934d00;
+  --accent:#934d00;
+  --font:"Times New Roman", serif;
+}
+
+/* Modern Minimal */
+body.theme-modern {
+  --bg:#f9fafb;
+  --text:#1a1a1a;
+  --card:#ffffff;
+  --border:#e5e7eb;
+  --accent:#2563eb;
+  --font:"Inter","Segoe UI",sans-serif;
+}
+
+/* === GLOBAL STYLES === */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--border);
+  text-decoration: none;
+}
+
+/* Buttons & inputs */
+button, select, input, textarea {
+  font-family: var(--font);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  padding: 0.4em 0.8em;
+  border-radius: 4px;
+}
+button:hover {
+  background: var(--accent);
+  color: #fff;
+}
+</style>
+</head>
+<body>
+  <nav>
+    <button onclick="setTheme('theme-retro')">Retro</button>
+    <button onclick="setTheme('theme-dos')">DOS</button>
+    <button onclick="setTheme('theme-neon')">Neon</button>
+    <button onclick="setTheme('theme-vapor')">Vaporwave</button>
+    <button onclick="setTheme('theme-beige')">Beige</button>
+    <button onclick="setTheme('theme-modern')">Modern</button>
+  </nav>
+
+  <div class="card">
+    <h1>Welcome</h1>
+    <p>This is a themed app. Links <a href="#">work</a> across all pages.</p>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme") || "theme-modern";
+  document.body.classList.add(savedTheme);
+});
+
+function setTheme(themeName) {
+  document.body.className = themeName;
+  localStorage.setItem("theme", themeName);
+}
+</script>
+</body>
+</html>
